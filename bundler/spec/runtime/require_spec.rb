@@ -433,13 +433,13 @@ RSpec.describe "Bundler.require" do
 
   it "does not extract gemspecs from application cache packages" do
     gemfile <<-G
-      source "#{file_uri_for(gem_repo1)}"
-      gem "rack"
+      source "https://gem.repo1"
+      gem "myrack"
     G
 
     bundle :cache
 
-    path = cached_gem("rack-1.0.0")
+    path = cached_gem("myrack-1.0.0")
 
     run <<-R
       File.open("#{path}", "w") do |f|

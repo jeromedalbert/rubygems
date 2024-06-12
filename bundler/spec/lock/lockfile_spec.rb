@@ -387,27 +387,23 @@ RSpec.describe "the lockfile format" do
     bundle "config set http://localgemserver.test/ user:pass"
 
     gemfile <<~G
-      source "#{file_uri_for(gem_repo1)}"
+      source "https://gem.repo1"
 
       source "http://localgemserver.test/" do
 
       end
 
       source "http://user:pass@othergemserver.test/" do
-        gem "rack-obama", ">= 1.0"
+        gem "myrack-obama", ">= 1.0"
       end
     G
 
     checksums = checksums_section_when_existing do |c|
-      c.checksum gem_repo2, "rack", "1.0.0"
-      c.checksum gem_repo2, "rack-obama", "1.0"
+      c.checksum gem_repo2, "myrack", "1.0.0"
+      c.checksum gem_repo2, "myrack-obama", "1.0"
     end
 
     lockfile_without_credentials = <<~L
-      GEM
-        remote: #{file_uri_for(gem_repo1)}/
-        specs:
-
       GEM
         remote: http://localgemserver.test/
         specs:
@@ -415,15 +411,19 @@ RSpec.describe "the lockfile format" do
       GEM
         remote: http://othergemserver.test/
         specs:
-          rack (1.0.0)
-          rack-obama (1.0)
-            rack
+          myrack (1.0.0)
+          myrack-obama (1.0)
+            myrack
+
+      GEM
+        remote: https://gem.repo1/
+        specs:
 
       PLATFORMS
         #{lockfile_platforms}
 
       DEPENDENCIES
-        rack-obama (>= 1.0)!
+        myrack-obama (>= 1.0)!
       #{checksums}
       BUNDLED WITH
          #{Bundler::VERSION}
@@ -440,27 +440,23 @@ RSpec.describe "the lockfile format" do
     bundle "config set http://localgemserver.test/ user:pass"
 
     gemfile <<~G
-      source "#{file_uri_for(gem_repo1)}"
+      source "https://gem.repo1"
 
       source "http://localgemserver.test/" do
 
       end
 
       source "http://user:pass@othergemserver.test/" do
-        gem "rack-obama", ">= 1.0"
+        gem "myrack-obama", ">= 1.0"
       end
     G
 
     checksums = checksums_section_when_existing do |c|
-      c.checksum gem_repo2, "rack", "1.0.0"
-      c.checksum gem_repo2, "rack-obama", "1.0"
+      c.checksum gem_repo2, "myrack", "1.0.0"
+      c.checksum gem_repo2, "myrack-obama", "1.0"
     end
 
     lockfile_with_credentials = <<~L
-      GEM
-        remote: #{file_uri_for(gem_repo1)}/
-        specs:
-
       GEM
         remote: http://localgemserver.test/
         specs:
@@ -468,15 +464,19 @@ RSpec.describe "the lockfile format" do
       GEM
         remote: http://user:pass@othergemserver.test/
         specs:
-          rack (1.0.0)
-          rack-obama (1.0)
-            rack
+          myrack (1.0.0)
+          myrack-obama (1.0)
+            myrack
+
+      GEM
+        remote: https://gem.repo1/
+        specs:
 
       PLATFORMS
         #{lockfile_platforms}
 
       DEPENDENCIES
-        rack-obama (>= 1.0)!
+        myrack-obama (>= 1.0)!
       #{checksums}
       BUNDLED WITH
          #{Bundler::VERSION}

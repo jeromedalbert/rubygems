@@ -18,16 +18,16 @@ RSpec.describe "compact index api" do
   it "has a debug mode" do
     gemfile <<-G
       source "#{source_uri}"
-      gem "rack"
+      gem "myrack"
     G
 
     bundle :install, artifice: "compact_index", env: { "DEBUG_COMPACT_INDEX" => "true" }
     expect(out).to include("Fetching gem metadata from #{source_uri}")
     expect(err).to include("[Bundler::CompactIndexClient] available?")
     expect(err).to include("[Bundler::CompactIndexClient] fetching versions")
-    expect(err).to include("[Bundler::CompactIndexClient] info(rack)")
-    expect(err).to include("[Bundler::CompactIndexClient] fetching info/rack")
-    expect(the_bundle).to include_gems "rack 1.0.0"
+    expect(err).to include("[Bundler::CompactIndexClient] info(myrack)")
+    expect(err).to include("[Bundler::CompactIndexClient] fetching info/myrack")
+    expect(the_bundle).to include_gems "myrack 1.0.0"
   end
 
   it "should URI encode gem names" do
