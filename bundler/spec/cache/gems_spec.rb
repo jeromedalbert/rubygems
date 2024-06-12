@@ -288,16 +288,32 @@ RSpec.describe "bundle cache" do
       expect(cached_gem("platform_specific-1.0-java")).to exist
     end
 
-    it "doesn't remove gems with mismatched :rubygems_version or :date" do
-      cached_gem("myrack-1.0.0").rmtree
+    it "doesn't remove gems cached gems that don't match their remote counterparts, but also refuses to install and prints an error" do
+      cached_myrack = cached_gem("myrack-1.0.0")
+      cached_myrack.rmtree
       build_gem "myrack", "1.0.0",
-        path: bundled_app("vendor/cache"),
+        path: cached_myrack.parent,
         rubygems_version: "1.3.2"
-      # This test is only really valid if the checksum isn't saved. It otherwise can't be the same gem. Tested below.
-      bundled_app_lock.write remove_checksums_from_lockfile(bundled_app_lock.read, "myrack (1.0.0)")
+
       simulate_new_machine
 
-      bundle :install
+      bundle :install, raise_on_error: false
+
+      expect(err).to eq <<~E.strip
+        Bundler found mismatched checksums. This is a potential security risk.
+          #{checksum_to_lock(gem_repo2, "myrack", "1.0.0")}
+            from the API at https://gem.repo2/
+          #{checksum_from_package(cached_myrack, "myrack", "1.0.0")}
+            from the gem at #{cached_myrack}
+
+        If you trust the API at https://gem.repo2/, to resolve this issue you can:
+          1. remove the gem at /Users/deivid/Code/rubygems/rubygems/bundler/tmp/1/bundled_app/vendor/cache/myrack-1.0.0.gem
+          2. run `bundle install`
+
+        To ignore checksum security warnings, disable checksum validation with
+          `bundle config set --local disable_checksum_validation true`
+      E
+
       expect(cached_gem("myrack-1.0.0")).to exist
     end
 
