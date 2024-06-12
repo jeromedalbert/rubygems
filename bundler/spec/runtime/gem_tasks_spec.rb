@@ -67,7 +67,7 @@ RSpec.describe "require 'bundler/gem_tasks'" do
     end
   end
 
-  context "rake build when path has bmyrackets", :ruby_repo do
+  context "rake build when path has brackets", :ruby_repo do
     before do
       bracketed_bundled_app = tmp("bundled[app")
       FileUtils.cp_r bundled_app, bracketed_bundled_app
