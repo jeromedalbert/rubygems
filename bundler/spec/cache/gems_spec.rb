@@ -307,7 +307,7 @@ RSpec.describe "bundle cache" do
             from the gem at #{cached_myrack}
 
         If you trust the API at https://gem.repo2/, to resolve this issue you can:
-          1. remove the gem at /Users/deivid/Code/rubygems/rubygems/bundler/tmp/1/bundled_app/vendor/cache/myrack-1.0.0.gem
+          1. remove the gem at #{cached_myrack}
           2. run `bundle install`
 
         To ignore checksum security warnings, disable checksum validation with
