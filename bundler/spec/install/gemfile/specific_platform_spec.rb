@@ -1075,14 +1075,14 @@ RSpec.describe "bundle install with specific platforms" do
       end
 
       gemfile <<~G
-        source "#{file_uri_for(gem_repo4)}"
+        source "https://gem.repo4"
 
         gem "sorbet"
       G
 
       lockfile <<~L
         GEM
-          remote: #{file_uri_for(gem_repo4)}/
+          remote: https://gem.repo4/
           specs:
 
         PLATFORMS
@@ -1098,7 +1098,7 @@ RSpec.describe "bundle install with specific platforms" do
 
       expect(lockfile).to eq <<~L
         GEM
-          remote: #{file_uri_for(gem_repo4)}/
+          remote: https://gem.repo4/
           specs:
             sorbet (0.5.10160)
               sorbet-static (= 0.5.10160)
